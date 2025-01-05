@@ -87,6 +87,8 @@ async function askQuestion() {
     document.getElementById('question').value = '';
 
     // Move the input area to the bottom and center it
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.appendChild(document.getElementById('question')); // Move the input to the bottom
     document.getElementById('question').scrollIntoView({ behavior: 'smooth' }); // Scroll to the input area
 }
 
@@ -95,4 +97,4 @@ document.getElementById('question').addEventListener('keypress', function(event)
     if (event.key === 'Enter') {
         askQuestion();
     }
-}); 
+});
