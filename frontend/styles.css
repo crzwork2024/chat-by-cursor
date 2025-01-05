@@ -121,6 +121,7 @@ button:hover {
 }
 
 .not-found-button {
+    display: inline-block;
     background-color: #ff0000;
     color: white;
     border: none;
