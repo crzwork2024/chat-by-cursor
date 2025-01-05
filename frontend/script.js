@@ -21,14 +21,18 @@ async function askQuestion() {
 
     const data = await response.json();
     
-    // Create a new response container
-    const responseDiv = document.createElement('div');
-    responseDiv.id = 'response';
-    responseDiv.style.marginTop = '100px'; // Add some space above the response
-    document.querySelector('.chat-container').appendChild(responseDiv);
-
     // Clear previous responses
-    responseDiv.innerHTML = '';
+    const responseDiv = document.getElementById('response');
+    if (!responseDiv) {
+        // Create a new response container if it doesn't exist
+        const newResponseDiv = document.createElement('div');
+        newResponseDiv.id = 'response';
+        newResponseDiv.style.marginTop = '20px'; // Add some space above the response
+        document.querySelector('.chat-container').appendChild(newResponseDiv);
+    } else {
+        // Clear previous content
+        responseDiv.innerHTML = '';
+    }
 
     // 显示相似问题和答案
     if (data.similar_answers && data.similar_questions) {
