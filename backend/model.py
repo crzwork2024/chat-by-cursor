@@ -42,11 +42,22 @@ def submit_no_answer(question):
 def query_data_from_db():
     # Get the total number of documents
     total_documents = len(collection.get()['documents'])
-    print(collection.get())
-    # Get the count of unanswered questions
-    unanswered_count = len([doc for doc in collection.get()['metadatas'] if doc['answer'] == '未回答问题'])
+    
+    # Get the documents and their corresponding metadata
+    documents = collection.get()['documents']
+    metadatas = collection.get()['metadatas']
+    ids = collection.get()['ids']
 
-    return total_documents, unanswered_count
+    # Get the unanswered questions and their IDs
+    unanswered_docs = [
+        {'question': metadatas[i]['question'], 'id': ids[i]} 
+        for i in range(len(metadatas)) 
+        if metadatas[i]['answer'] == '未回答问题'
+    ]
+    
+    unanswered_count = len(unanswered_docs)
+
+    return total_documents, unanswered_count, unanswered_docs
 
 
 # Example usage

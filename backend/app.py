@@ -28,11 +28,21 @@ def record_unanswered():
 
 @app.route('/query_data', methods=['GET'])
 def query_data():
-    total_documents, unanswered_count = query_data_from_db()
+    total_documents, unanswered_count, unanswered_questions = query_data_from_db()
     return jsonify({
         'total_documents': total_documents,
-        'unanswered_count': unanswered_count
+        'unanswered_count': unanswered_count,
+        'unanswered_questions': unanswered_questions  # Return unanswered questions with IDs
     })
+
+@app.route('/unanswered_questions', methods=['GET'])
+def get_unanswered_questions():
+    # Fetch all documents and filter for unanswered questions
+    unanswered_questions = [
+        doc['question'] for doc in collection.get()['documents'] 
+        if doc['answer'] == '未回答问题'
+    ]
+    return jsonify(unanswered_questions)
 
 if __name__ == '__main__':
     app.run(debug=True) 
