@@ -13,21 +13,49 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p>未回答问题数量: ${data.unanswered_count}</p>
     `;
 
-    const dropdown = document.getElementById('unansweredQuestions');
-    dropdown.innerHTML = ''; // Clear existing options
+    const unansweredQuestionsList = document.getElementById('unansweredQuestionsList');
+    unansweredQuestionsList.innerHTML = ''; // Clear existing options
+
+    // 计数器
+    let count = 0;
 
     data.unanswered_questions.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.id; // Set the ID as the value
-        option.textContent = item.question; // Display the question text
-        dropdown.appendChild(option);
+        if (count < 5) { // 只添加前 5 个未回答的问题
+            const listItem = document.createElement('li');
+            listItem.textContent = item.question; // Display the question text
+            listItem.dataset.id = item.id; // Store the ID in a data attribute
+            unansweredQuestionsList.appendChild(listItem);
+            count++; // 增加计数器
+
+            // 为每个列表项添加点击事件
+            listItem.addEventListener('click', function() {
+                document.getElementById('editText').value = listItem.textContent; // 将选中的问题填入编辑框
+                document.getElementById('modal').style.display = 'flex'; // 显示编辑模态框
+            });
+        }
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function() {
+        const filter = searchInput.value.toLowerCase();
+        const items = unansweredQuestionsList.getElementsByTagName('li');
+
+        for (let i = 0; i < items.length; i++) {
+            const textValue = items[i].textContent.toLowerCase();
+            if (textValue.indexOf(filter) > -1) {
+                items[i].style.display = ""; // Show matching items
+            } else {
+                items[i].style.display = "none"; // Hide non-matching items
+            }
+        }
     });
 
     // Handle edit question button click
     document.getElementById('editQuestion').addEventListener('click', function() {
-        const selectedOption = dropdown.options[dropdown.selectedIndex];
-        if (selectedOption.value) {
-            document.getElementById('editText').value = selectedOption.textContent; // Set the textarea to the selected question
+        const selectedItem = unansweredQuestionsList.querySelector('li:not([style*="display: none"])'); // Get the first visible item
+        if (selectedItem) {
+            document.getElementById('editText').value = selectedItem.textContent; // Set the textarea to the selected question
             document.getElementById('modal').style.display = 'flex'; // Show the modal
         } else {
             alert('请先选择一个未回答问题。');
@@ -41,11 +69,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Update question
     document.getElementById('updateQuestion').addEventListener('click', async function() {
-        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const selectedItem = unansweredQuestionsList.querySelector('li:not([style*="display: none"])'); // Get the first visible item
         const updatedQuestion = document.getElementById('editText').value;
 
-        if (selectedOption.value && updatedQuestion.trim()) {
-            await fetch(`http://127.0.0.1:5000/update_question/${selectedOption.value}`, {
+        if (selectedItem && updatedQuestion.trim()) {
+            await fetch(`http://127.0.0.1:5000/update_question/${selectedItem.dataset.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -54,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
             alert('问题已更新。');
             document.getElementById('modal').style.display = 'none';
-            location.reload(); // Reload the page to refresh the dropdown
+            location.reload(); // Reload the page to refresh the list
         } else {
             alert('请填写更新内容。');
         }
@@ -62,15 +90,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Delete question
     document.getElementById('deleteQuestion').addEventListener('click', async function() {
-        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const selectedItem = unansweredQuestionsList.querySelector('li:not([style*="display: none"])'); // Get the first visible item
 
-        if (selectedOption.value) {
-            await fetch(`http://127.0.0.1:5000/delete_question/${selectedOption.value}`, {
+        if (selectedItem) {
+            await fetch(`http://127.0.0.1:5000/delete_question/${selectedItem.dataset.id}`, {
                 method: 'DELETE'
             });
             alert('问题已删除。');
             document.getElementById('modal').style.display = 'none';
-            location.reload(); // Reload the page to refresh the dropdown
+            location.reload(); // Reload the page to refresh the list
         } else {
             alert('请先选择一个未回答问题。');
         }
@@ -139,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     expandableDiv.style.display = 'none';
                     toggleButton.innerText = '显示更多答案';
                     
-                    // 隐藏“问题未找到”按钮
+                    // 隐藏"问题未找到"按钮
                     const notFoundButton = document.getElementById('notFoundButton');
                     if (notFoundButton) {
                         notFoundButton.style.display = 'none'; // 隐藏按钮
