@@ -24,7 +24,6 @@ async function askQuestion() {
     // Clear previous responses
     let responseDiv = document.getElementById('response');
     if (!responseDiv) {
-        // Create a new response container if it doesn't exist
         responseDiv = document.createElement('div');
         responseDiv.id = 'response';
         responseDiv.style.marginTop = '20px'; // Add some space above the response
@@ -73,21 +72,26 @@ async function askQuestion() {
                     expandableDiv.style.display = 'block';
                     toggleButton.innerText = '隐藏答案';
                     
-                    // Add the "问题未找到" button
-                    const notFoundButton = document.createElement('button');
-                    notFoundButton.className = 'toggle-button';
-                    notFoundButton.innerText = '问题未找到';
-                    notFoundButton.onclick = async function() {
-                        await fetch('http://127.0.0.1:5000/record_unanswered', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ question })
-                        });
-                        alert('问题已记录为未回答。');
-                    };
-                    responseDiv.appendChild(notFoundButton);
+                    // Check if the "问题未找到" button already exists
+                    let notFoundButton = document.getElementById('notFoundButton');
+                    if (!notFoundButton) {
+                        // Add the "问题未找到" button
+                        notFoundButton = document.createElement('button');
+                        notFoundButton.id = 'notFoundButton'; // Set an ID for the button
+                        notFoundButton.className = 'not-found-button'; // Use the new class
+                        notFoundButton.innerText = '问题未找到';
+                        notFoundButton.onclick = async function() {
+                            await fetch('http://127.0.0.1:5000/record_unanswered', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ question })
+                            });
+                            alert('问题已记录为未回答。');
+                        };
+                        responseDiv.appendChild(notFoundButton); // Append the button
+                    }
                 } else {
                     expandableDiv.style.display = 'none';
                     toggleButton.innerText = '显示更多答案';
