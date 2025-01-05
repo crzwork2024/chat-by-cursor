@@ -59,40 +59,6 @@ def query_data_from_db():
 
     return total_documents, unanswered_count, unanswered_docs
 
-def delete_unanswered_question(question_id):
-    # Logic to delete the question from ChromaDB
-    try:
-        collection.delete(ids=[question_id])
-    except Exception as e:
-        print(f"Error deleting question with ID {question_id}: {e}")  # Log the error
-        raise  # Re-raise the exception to be caught in the app.py
-
-def update_unanswered_question(question_id, new_answer):
-    # Get the current documents and metadata
-    documents = collection.get()['documents']
-    metadatas = collection.get()['metadatas']
-    ids = collection.get()['ids']
-
-    # Find the index of the document with the given ID
-    index = None
-    for i, doc_id in enumerate(ids):
-        if doc_id == question_id:
-            index = i
-            break
-
-    if index is not None:
-        # Prepare the data for upsert
-        updated_document = documents[index]  # Keep the same document
-        updated_metadata = metadatas[index]  # Get the current metadata
-        updated_metadata['answer'] = new_answer  # Update the answer
-
-        # Perform the upsert operation
-        collection.update(
-            ids=[question_id],  # Use the same ID
-            metadatas=[updated_metadata],  # Update the metadata with the new answer
-        )
-    else:
-        raise ValueError(f"Question ID {question_id} not found.")
 
 # Example usage
 if __name__ == "__main__":
