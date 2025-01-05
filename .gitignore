@@ -1,0 +1,71 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+dist/
+build/
+out/
+*.tgz
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+*.egg
+*.pyc
+*.pdb
+*.pyo
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+.cache/
+.cache-loader/
+
+# Ignore large folders
+large_folder_1/
+large_folder_2/
+
+# Web caches
+.cache/
+*.cache
+*.log
+*.tmp
+*.temp
+
+# Ignore common web build artifacts
+public/
+static/
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Ignore large folders
+model/
+data/
+.git/
