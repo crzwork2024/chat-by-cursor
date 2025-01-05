@@ -7,6 +7,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    flex-direction: column;
 }
 
 .chat-container {
@@ -56,6 +57,7 @@ textarea {
     background-color: #40444b;
     color: #ffffff;
     resize: none;
+    margin-top: 10px;
 }
 
 textarea::placeholder {
