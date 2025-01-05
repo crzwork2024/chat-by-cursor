@@ -27,6 +27,21 @@ def get_answer(question, top_k=3):
     else:
         return None, []  # 没有找到结果
 
+def submit_no_answer(question):
+    # Encode the input question to a vector
+    vector = model.encode(question)
+    
+    index = len(collection.get()['documents'])
+    collection.add(
+        documents=[question],  # Use the question string
+        embeddings=[vector],  # Pass the vector as embeddings
+        metadatas=[{'answer': '未回答问题', 'question': question}],  # 添加元数据
+        ids=[f'id_{index}']  # 使用唯一 ID
+    )
+
+
+
+
 # Example usage
 if __name__ == "__main__":
     question = "如何评估模型的准确性"

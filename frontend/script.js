@@ -72,6 +72,22 @@ async function askQuestion() {
                 if (expandableDiv.style.display === 'none') {
                     expandableDiv.style.display = 'block';
                     toggleButton.innerText = '隐藏答案';
+                    
+                    // Add the "问题未找到" button
+                    const notFoundButton = document.createElement('button');
+                    notFoundButton.className = 'toggle-button';
+                    notFoundButton.innerText = '问题未找到';
+                    notFoundButton.onclick = async function() {
+                        await fetch('http://127.0.0.1:5000/record_unanswered', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ question })
+                        });
+                        alert('问题已记录为未回答。');
+                    };
+                    responseDiv.appendChild(notFoundButton);
                 } else {
                     expandableDiv.style.display = 'none';
                     toggleButton.innerText = '显示更多答案';
