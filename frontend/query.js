@@ -1,4 +1,4 @@
-document.getElementById('fetchData').addEventListener('click', async function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const response = await fetch('http://127.0.0.1:5000/query_data');
     
     if (!response.ok) {
