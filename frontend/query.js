@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     data.unanswered_questions.forEach(item => {
         if (count < 5) { // 只添加前 5 个未回答的问题
             const listItem = document.createElement('li');
-            listItem.textContent = item.question; // Display the question text
+            listItem.textContent = `${count + 1}. ${item.question}`; // 添加序号
             listItem.dataset.id = item.id; // Store the ID in a data attribute
             unansweredQuestionsList.appendChild(listItem);
             count++; // 增加计数器
