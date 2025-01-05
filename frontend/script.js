@@ -21,14 +21,18 @@ async function askQuestion() {
 
     const data = await response.json();
     
-    // Create a new response container
-    const responseDiv = document.createElement('div');
-    responseDiv.id = 'response';
-    responseDiv.style.marginTop = '100px'; // Add some space above the response
-    document.querySelector('.chat-container').appendChild(responseDiv);
-
     // Clear previous responses
-    responseDiv.innerHTML = '';
+    let responseDiv = document.getElementById('response');
+    if (!responseDiv) {
+        // Create a new response container if it doesn't exist
+        responseDiv = document.createElement('div');
+        responseDiv.id = 'response';
+        responseDiv.style.marginTop = '20px'; // Add some space above the response
+        document.querySelector('.chat-container').appendChild(responseDiv);
+    } else {
+        // Clear previous content
+        responseDiv.innerHTML = '';
+    }
 
     // 显示相似问题和答案
     if (data.similar_answers && data.similar_questions) {
@@ -86,6 +90,9 @@ async function askQuestion() {
     const chatContainer = document.querySelector('.chat-container');
     chatContainer.appendChild(document.getElementById('question')); // Move the input to the bottom
     document.getElementById('question').scrollIntoView({ behavior: 'smooth' }); // Scroll to the input area
+
+    // Set focus back to the input field
+    document.getElementById('question').focus(); // Ensure the input field is focused
 }
 
 // 添加事件监听器以支持 Enter 键提交
