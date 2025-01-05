@@ -39,9 +39,8 @@ async function askQuestion() {
         const firstCard = document.createElement('div');
         firstCard.className = 'card';
         firstCard.innerHTML = `
-            <div class="card-header">相似问题 1:</div>
             <p>${data.similar_questions[0]}</p>
-            <div class="card-header">答案 1:</div>
+            <div class="card-header">回答:</div>
             <p>${data.similar_answers[0]}</p>
         `;
         responseDiv.appendChild(firstCard);
@@ -54,9 +53,8 @@ async function askQuestion() {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div class="card-header">相似问题 ${i + 1}:</div>
                     <p>${data.similar_questions[i]}</p>
-                    <div class="card-header">答案 ${i + 1}:</div>
+                    <div class="card-header">回答:</div>
                     <p>${data.similar_answers[i]}</p>
                 `;
                 expandableDiv.appendChild(card);
