@@ -63,9 +63,17 @@ async function askQuestion() {
                 if (expandableDiv.style.display === 'none') {
                     expandableDiv.style.display = 'block';
                     toggleButton.innerText = '隐藏答案';
+                    // Adjust the height of the chat container based on content
+                    const chatContainer = document.querySelector('.chat-container');
+                    chatContainer.style.height = 'auto'; // Reset height
+                    chatContainer.style.height = chatContainer.scrollHeight + 'px'; // Set height to content height
                 } else {
                     expandableDiv.style.display = 'none';
                     toggleButton.innerText = '显示更多答案';
+                    // Adjust the height of the chat container based on content
+                    const chatContainer = document.querySelector('.chat-container');
+                    chatContainer.style.height = 'auto'; // Reset height
+                    chatContainer.style.height = chatContainer.scrollHeight + 'px'; // Set height to content height
                 }
             };
             responseDiv.appendChild(toggleButton);
@@ -76,6 +84,11 @@ async function askQuestion() {
 
     // 清空输入框
     document.getElementById('question').value = '';
+
+    // Adjust the height of the chat container based on content
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.style.height = 'auto'; // Reset height
+    chatContainer.style.height = chatContainer.scrollHeight + 'px'; // Set height to content height
 }
 
 // 添加事件监听器以支持 Enter 键提交
