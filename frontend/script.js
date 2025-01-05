@@ -1,6 +1,5 @@
 async function askQuestion() {
     const question = document.getElementById('question').value;
-    const responseDiv = document.getElementById('response');
 
     if (!question.trim()) {
         return; // 如果输入为空，则不提交
@@ -22,7 +21,13 @@ async function askQuestion() {
 
     const data = await response.json();
     
-    // 清空之前的响应
+    // Create a new response container
+    const responseDiv = document.createElement('div');
+    responseDiv.id = 'response';
+    responseDiv.style.marginTop = '100px'; // Add some space above the response
+    document.querySelector('.chat-container').appendChild(responseDiv);
+
+    // Clear previous responses
     responseDiv.innerHTML = '';
 
     // 显示相似问题和答案
@@ -63,10 +68,6 @@ async function askQuestion() {
                 if (expandableDiv.style.display === 'none') {
                     expandableDiv.style.display = 'block';
                     toggleButton.innerText = '隐藏答案';
-                    // Adjust the height of the chat container based on content
-                    const chatContainer = document.querySelector('.chat-container');
-                    chatContainer.style.height = 'auto'; // Reset height
-                    chatContainer.style.height = chatContainer.scrollHeight + 'px'; // Set height to content height
                 } else {
                     expandableDiv.style.display = 'none';
                     toggleButton.innerText = '显示更多答案';
@@ -82,9 +83,6 @@ async function askQuestion() {
     document.getElementById('question').value = '';
 
     // Move the input area to the bottom and center it
-    const chatContainer = document.querySelector('.chat-container');
-    chatContainer.style.height = 'auto'; // Reset height
-    chatContainer.style.height = chatContainer.scrollHeight + 'px'; // Set height to content height
     document.getElementById('question').scrollIntoView({ behavior: 'smooth' }); // Scroll to the input area
 }
 
