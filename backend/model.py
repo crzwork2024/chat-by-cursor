@@ -7,7 +7,7 @@ client = chromadb.Client(chromadb.config.Settings(anonymized_telemetry=False, is
 
 # Connect to or create a collection
 collection = client.get_or_create_collection("my_collection")
-print(f"Number of documents in collection: {len(collection.get()['documents'])}")
+#print(f"Number of documents in collection: {len(collection.get()['documents'])}")
 
 def get_answer(question, top_k=3):
     # Encode the input question to a vector
@@ -39,7 +39,14 @@ def submit_no_answer(question):
         ids=[f'id_{index}']  # 使用唯一 ID
     )
 
+def query_data_from_db():
+    # Get the total number of documents
+    total_documents = len(collection.get()['documents'])
+    print(collection.get())
+    # Get the count of unanswered questions
+    unanswered_count = len([doc for doc in collection.get()['metadatas'] if doc['answer'] == '未回答问题'])
 
+    return total_documents, unanswered_count
 
 
 # Example usage

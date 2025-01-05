@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from model import get_answer, submit_no_answer
+from model import get_answer, submit_no_answer, query_data_from_db
 from flask_cors import CORS
 
 
@@ -25,6 +25,14 @@ def record_unanswered():
     # Assuming you have a collection named 'questions'
     submit_no_answer(question)
     return jsonify({'message': '问题已记录为未回答。'})
+
+@app.route('/query_data', methods=['GET'])
+def query_data():
+    total_documents, unanswered_count = query_data_from_db()
+    return jsonify({
+        'total_documents': total_documents,
+        'unanswered_count': unanswered_count
+    })
 
 if __name__ == '__main__':
     app.run(debug=True) 
