@@ -27,22 +27,37 @@ async function askQuestion() {
 
     // 显示相似问题和答案
     if (data.similar_answers && data.similar_questions) {
-        // Show the first similar question and answer
-        responseDiv.innerHTML += `<p><strong>相似问题 1:</strong> ${data.similar_questions[0]}</p>`;
-        responseDiv.innerHTML += `<p><strong>答案 1:</strong> ${data.similar_answers[0]}</p>`;
+        // Show the first similar question and answer in a card
+        const firstCard = document.createElement('div');
+        firstCard.className = 'card';
+        firstCard.innerHTML = `
+            <div class="card-header">相似问题 1:</div>
+            <p>${data.similar_questions[0]}</p>
+            <div class="card-header">答案 1:</div>
+            <p>${data.similar_answers[0]}</p>
+        `;
+        responseDiv.appendChild(firstCard);
 
         // Create an expandable section for the rest
         if (data.similar_questions.length > 1) {
             const expandableDiv = document.createElement('div');
             expandableDiv.style.display = 'none'; // Initially hidden
             for (let i = 1; i < data.similar_answers.length; i++) {
-                expandableDiv.innerHTML += `<p><strong>相似问题 ${i + 1}:</strong> ${data.similar_questions[i]}</p>`;
-                expandableDiv.innerHTML += `<p><strong>答案 ${i + 1}:</strong> ${data.similar_answers[i]}</p>`;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">相似问题 ${i + 1}:</div>
+                    <p>${data.similar_questions[i]}</p>
+                    <div class="card-header">答案 ${i + 1}:</div>
+                    <p>${data.similar_answers[i]}</p>
+                `;
+                expandableDiv.appendChild(card);
             }
             responseDiv.appendChild(expandableDiv);
 
             // Add a button to toggle the expandable section
             const toggleButton = document.createElement('button');
+            toggleButton.className = 'toggle-button';
             toggleButton.innerText = '显示更多答案';
             toggleButton.onclick = function() {
                 if (expandableDiv.style.display === 'none') {

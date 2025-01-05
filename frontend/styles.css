@@ -68,4 +68,32 @@ button {
 
 button:hover {
     background-color: #5b6eae;
+}
+
+.card {
+    background-color: #3a3f44;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.toggle-button {
+    background-color: #7289da;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.toggle-button:hover {
+    background-color: #5b6eae;
 } 
